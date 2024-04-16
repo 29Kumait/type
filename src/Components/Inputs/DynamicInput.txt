@@ -1,0 +1,989 @@
+// import React, { useReducer, useState } from "react";
+// import { v4 as uuidv4 } from "uuid";
+//
+// // InputField Interface
+// interface InputField {
+//   id: string;
+//   type: "text" | "select" | "checkbox";
+//   value: string;
+//   textValue?: string; // For additional text input alongside select and checkbox
+//   options?: Array<{ label: string; value: string }>;
+//   editable: boolean;
+//   groupName: string;
+// }
+//
+// // State and Action types
+// type State = InputField[];
+// type Action =
+//   | {
+//       type: "ADD_INPUT";
+//       inputType: "text" | "select" | "checkbox";
+//       groupName: string;
+//       options?: Array<{ label: string; value: string }>;
+//     }
+//   | { type: "UPDATE_INPUT"; id: string; value: string; textValue?: string }
+//   | { type: "TOGGLE_EDITABILITY"; id: string }
+//   | { type: "SUBMIT" };
+//
+// // Reducer function
+// const inputReducer = (state: State, action: Action): State => {
+//   switch (action.type) {
+//     case "ADD_INPUT":
+//       return [
+//         ...state,
+//         {
+//           id: uuidv4(),
+//           type: action.inputType,
+//           value: action.inputType === "checkbox" ? "false" : "",
+//           editable: true,
+//           groupName: action.groupName,
+//           options: action.options,
+//         },
+//       ];
+//     case "UPDATE_INPUT":
+//       return state.map((input) =>
+//         input.id === action.id
+//           ? { ...input, value: action.value, textValue: action.textValue }
+//           : input,
+//       );
+//     case "TOGGLE_EDITABILITY":
+//       return state.map((input) =>
+//         input.id === action.id
+//           ? { ...input, editable: !input.editable }
+//           : input,
+//       );
+//     case "SUBMIT":
+//       return state
+//         .map((input) => ({ ...input, editable: false }))
+//         .filter(
+//           (input) => input.value.trim() !== "" || input.type === "checkbox",
+//         );
+//     default:
+//       return state;
+//   }
+// };
+//
+// const Input = ({ input, dispatch }) => {
+//   // Adjusted to handle checkbox changes correctly
+//   const handleInputChange = (e, textValue) => {
+//     const newValue =
+//       input.type === "checkbox" ? String(e.target.checked) : e.target.value;
+//     dispatch({
+//       type: "UPDATE_INPUT",
+//       id: input.id,
+//       value: newValue,
+//       textValue: input.type !== "checkbox" ? textValue : input.textValue,
+//     });
+//   };
+//
+//   if (!input.editable) {
+//     return (
+//       <span>
+//         {input.value} {input.textValue && `(${input.textValue})`}
+//       </span>
+//     );
+//   }
+//
+//   return (
+//     <>
+//       {input.type === "text" && (
+//         <input
+//           type="text"
+//           value={input.value}
+//           onChange={(e) => handleInputChange(e)}
+//         />
+//       )}
+//       {input.type === "select" && (
+//         <>
+//           <select value={input.value} onChange={(e) => handleInputChange(e)}>
+//             {input.options?.map((option) => (
+//               <option key={option.value} value={option.value}>
+//                 {option.label}
+//               </option>
+//             ))}
+//           </select>
+//           <input
+//             type="text"
+//             placeholder="Additional info"
+//             value={input.textValue || ""}
+//             onChange={(e) => handleInputChange(e, e.target.value)}
+//           />
+//         </>
+//       )}
+//       {input.type === "checkbox" && (
+//         <>
+//           <input
+//             type="checkbox"
+//             checked={input.value === "true"}
+//             onChange={(e) => handleInputChange(e)}
+//           />
+//           <input
+//             type="text"
+//             placeholder="Additional info"
+//             value={input.textValue || ""}
+//             onChange={(e) => handleInputChange(e, e.target.value)}
+//           />
+//         </>
+//       )}
+//     </>
+//   );
+// };
+// // Main component
+// const DynamicInput = () => {
+//   const [inputs, dispatch] = useReducer(inputReducer, []);
+//   const [newInputType, setNewInputType] = useState<
+//     "text" | "select" | "checkbox"
+//   >("text");
+//   const [newGroupName, setNewGroupName] = useState<string>("Default Group");
+//
+//   // Example options for select inputs
+//   const selectOptions = [
+//     { label: "Option 1", value: "option1" },
+//     { label: "Option 2", value: "option2" },
+//   ];
+//
+//   const handleSubmit = (event: React.FormEvent) => {
+//     event.preventDefault();
+//     dispatch({ type: "SUBMIT" });
+//   };
+//
+//   const groupedInputs = inputs.reduce(
+//     (acc, input) => {
+//       acc[input.groupName] = acc[input.groupName] || [];
+//       acc[input.groupName].push(input);
+//       return acc;
+//     },
+//     {} as Record<string, InputField[]>,
+//   );
+//
+//   return (
+//     <div>
+//       <select
+//         value={newInputType}
+//         onChange={(e) =>
+//           setNewInputType(e.target.value as "text" | "select" | "checkbox")
+//         }
+//       >
+//         <option value="text">Text</option>
+//         <option value="select">Select</option>
+//         <option value="checkbox">Checkbox</option>
+//       </select>
+//       <input
+//         type="text"
+//         value={newGroupName}
+//         onChange={(e) => setNewGroupName(e.target.value)}
+//         placeholder="Group Name"
+//       />
+//       <button
+//         onClick={() =>
+//           dispatch({
+//             type: "ADD_INPUT",
+//             inputType: newInputType,
+//             groupName: newGroupName,
+//             options: newInputType === "select" ? selectOptions : undefined,
+//           })
+//         }
+//       >
+//         Add New Input
+//       </button>
+//       <form onSubmit={handleSubmit}>
+//         {Object.entries(groupedInputs).map(([groupName, inputs]) => (
+//           <div key={groupName}>
+//             <h3>{groupName}</h3>
+//             {inputs.map((input) => (
+//               <div key={input.id}>
+//                 <Input input={input} dispatch={dispatch} />
+//                 {!input.editable && (
+//                   <button
+//                     type="button"
+//                     onClick={() =>
+//                       dispatch({ type: "TOGGLE_EDITABILITY", id: input.id })
+//                     }
+//                   >
+//                     Edit
+//                   </button>
+//                 )}
+//               </div>
+//             ))}
+//           </div>
+//         ))}
+//         <button type="submit">Submit</button>
+//       </form>
+//     </div>
+//   );
+// };
+//
+// export default DynamicInput;
+
+// import React, { useReducer, useState } from "react";
+// import { v4 as uuidv4 } from "uuid";
+//
+// interface InputField {
+//   id: string;
+//   type: "text" | "select" | "checkbox";
+//   value: string;
+//   options?: Array<{ label: string; value: string }>;
+//   editable: boolean;
+//   groupName: string;
+// }
+//
+// type State = InputField[];
+//
+// type Action =
+//     | { type: "ADD_INPUT"; inputType: "text" | "select" | "checkbox"; groupName: string; options?: Array<{ label: string; value: string }> }
+//     | { type: "UPDATE_INPUT"; id: string; value: string }
+//     | { type: "TOGGLE_EDITABILITY"; id: string }
+//     | { type: "SUBMIT" };
+//
+// const inputReducer = (state: State, action: Action): State => {
+//   switch (action.type) {
+//     case "ADD_INPUT":
+//       return [
+//         ...state,
+//         {
+//           id: uuidv4(),
+//           type: action.inputType,
+//           value: action.inputType === "checkbox" ? "false" : "",
+//           editable: true,
+//           groupName: action.groupName,
+//           options: action.options,
+//         },
+//       ];
+//     case "UPDATE_INPUT":
+//       return state.map((input) =>
+//           input.id === action.id ? { ...input, value: action.value } : input,
+//       );
+//     case "TOGGLE_EDITABILITY":
+//       return state.map((input) =>
+//           input.id === action.id ? { ...input, editable: !input.editable } : input,
+//       );
+//     case "SUBMIT":
+//       return state
+//           .map((input) => ({ ...input, editable: false }))
+//           .filter((input) => input.value.trim() !== "" || input.type === "checkbox");
+//     default:
+//       return state;
+//   }
+// };
+//
+// const DynamicInput: React.FC = () => {
+//   const [inputs, dispatch] = useReducer(inputReducer, []);
+//   const [newInputType, setNewInputType] = useState<"text" | "select" | "checkbox">("text");
+//   const [newGroupName, setNewGroupName] = useState<string>("Default Group");
+//
+//   // Example options for select inputs; adjust as needed
+//   const selectOptions = [
+//     { label: "Option 1", value: "option1" },
+//     { label: "Option 2", value: "option2" },
+//   ];
+//
+//   const handleSubmit = (event: React.FormEvent) => {
+//     event.preventDefault();
+//     dispatch({ type: "SUBMIT" });
+//   };
+//
+//   const groupedInputs = inputs.reduce(
+//       (acc, input) => {
+//         acc[input.groupName] = acc[input.groupName] || [];
+//         acc[input.groupName].push(input);
+//         return acc;
+//       },
+//       {} as Record<string, InputField[]>,
+//   );
+//
+//   const renderInput = (input: InputField) => {
+//     if (!input.editable) {
+//       return <span>{input.value}</span>;
+//     }
+//     switch (input.type) {
+//       case "text":
+//         return (
+//             <input
+//                 type="text"
+//                 value={input.value}
+//                 onChange={(e) =>
+//                     dispatch({
+//                       type: "UPDATE_INPUT",
+//                       id: input.id,
+//                       value: e.target.value,
+//                     })
+//                 }
+//             />
+//         );
+//       case "select":
+//         return (
+//             <select
+//                 value={input.value}
+//                 onChange={(e) =>
+//                     dispatch({
+//                       type: "UPDATE_INPUT",
+//                       id: input.id,
+//                       value: e.target.value,
+//                     })
+//                 }
+//             >
+//               {input.options?.map((option) => (
+//                   <option key={option.value} value={option.value}>
+//                     {option.label}
+//                   </option>
+//               ))}
+//             </select>
+//         );
+//       case "checkbox":
+//         return (
+//             <input
+//                 type="checkbox"
+//                 checked={input.value === "true"}
+//                 onChange={(e) =>
+//                     dispatch({
+//                       type: "UPDATE_INPUT",
+//                       id: input.id,
+//                       value: String(e.target.checked),
+//                     })
+//                 }
+//             />
+//         );
+//       default:
+//         return null;
+//     }
+//   };
+//
+//   return (
+//       <div>
+//         <select value={newInputType} onChange={(e) => setNewInputType(e.target.value as "text" | "select" | "checkbox")}>
+//           <option value="text">Text</option>
+//           <option value="select">Select</option>
+//           <option value="checkbox">Checkbox</option>
+//         </select>
+//         <input
+//             type="text"
+//             value={newGroupName}
+//             onChange={(e) => setNewGroupName(e.target.value)}
+//             placeholder="Group Name"
+//         />
+//         <button
+//             onClick={() =>
+//                 dispatch({
+//                   type: "ADD_INPUT",
+//                   inputType: newInputType,
+//                   groupName: newGroupName,
+//                   options: newInputType === "select" ? selectOptions : undefined,
+//                 })
+//             }
+//         >
+//           Add New Input
+//         </button>
+//         <form onSubmit={handleSubmit}>
+//           {Object.entries(groupedInputs).map(([groupName, inputs]) => (
+//               <div key={groupName}>
+//                 <h3>{groupName}</h3>
+//                 {inputs.map((input) => (
+//                     <div key={input.id}>
+//                       {renderInput(input)}
+//                       {!input.editable && (
+//                           <button
+//                               type="button"
+//                               onClick={() =>
+//                                   dispatch({ type: "TOGGLE_EDITABILITY", id: input.id })
+//                               }
+//                           >
+//                             Edit
+//                           </button>
+//                       )}
+//                     </div>
+//                 ))}
+//               </div>
+//           ))}
+//           <button type="submit">Submit</button>
+//         </form>
+//       </div>
+//   );
+// };
+//
+// export default DynamicInput;
+
+// import React, { useReducer } from "react";
+// import { v4 as uuidv4 } from "uuid";
+//
+// interface InputField {
+//   id: string;
+//   type: "text" | "select" | "checkbox";
+//   value: string;
+//   options?: Array<{ label: string; value: string }>;
+//   editable: boolean;
+//   groupName: string;
+// }
+//
+// type State = InputField[];
+//
+// type Action =
+//   | { type: "ADD_INPUT"; groupName: string }
+//   | { type: "UPDATE_INPUT"; id: string; value: string }
+//   | { type: "TOGGLE_EDITABILITY"; id: string }
+//   | { type: "SUBMIT" };
+//
+// const inputReducer = (state: State, action: Action): State => {
+//   switch (action.type) {
+//     case "ADD_INPUT":
+//       return [
+//         ...state,
+//         {
+//           id: uuidv4(),
+//           type: "text",
+//           value: "",
+//           editable: true,
+//           groupName: action.groupName,
+//         },
+//       ];
+//     case "UPDATE_INPUT":
+//       return state.map((input) =>
+//         input.id === action.id ? { ...input, value: action.value } : input,
+//       );
+//     case "TOGGLE_EDITABILITY":
+//       return state.map((input) =>
+//         input.id === action.id
+//           ? { ...input, editable: !input.editable }
+//           : input,
+//       );
+//     case "SUBMIT":
+//       return state
+//         .map((input) => ({ ...input, editable: false }))
+//         .filter((input) => input.value.trim() !== "");
+//     default:
+//       return state;
+//   }
+// };
+//
+// const DynamicInput: React.FC = () => {
+//   const [inputs, dispatch] = useReducer(inputReducer, [
+//     {
+//       id: uuidv4(),
+//       type: "text",
+//       value: "",
+//       editable: true,
+//       groupName: "Default Group",
+//     },
+//   ]);
+//
+//   const handleSubmit = (event: React.FormEvent) => {
+//     event.preventDefault();
+//     dispatch({ type: "SUBMIT" });
+//   };
+//
+//   const groupedInputs = inputs.reduce(
+//     (acc, input) => {
+//       acc[input.groupName] = acc[input.groupName] || [];
+//       acc[input.groupName].push(input);
+//       return acc;
+//     },
+//     {} as Record<string, InputField[]>,
+//   );
+//
+//   const renderInput = (input: InputField) => {
+//     if (!input.editable) {
+//       return <span>{input.value}</span>;
+//     }
+//     switch (input.type) {
+//       case "text":
+//         return (
+//           <input
+//             type="text"
+//             value={input.value}
+//             onChange={(e) =>
+//               dispatch({
+//                 type: "UPDATE_INPUT",
+//                 id: input.id,
+//                 value: e.target.value,
+//               })
+//             }
+//           />
+//         );
+//       case "select":
+//         return (
+//           <select
+//             value={input.value}
+//             onChange={(e) =>
+//               dispatch({
+//                 type: "UPDATE_INPUT",
+//                 id: input.id,
+//                 value: e.target.value,
+//               })
+//             }
+//           >
+//             {input.options?.map((option) => (
+//               <option key={option.value} value={option.value}>
+//                 {option.label}
+//               </option>
+//             ))}
+//           </select>
+//         );
+//       case "checkbox":
+//         return (
+//           <input
+//             type="checkbox"
+//             checked={input.value === "true"}
+//             onChange={(e) =>
+//               dispatch({
+//                 type: "UPDATE_INPUT",
+//                 id: input.id,
+//                 value: String(e.target.checked),
+//               })
+//             }
+//           />
+//         );
+//       default:
+//         return null;
+//     }
+//   };
+//
+//   return (
+//     <form onSubmit={handleSubmit}>
+//       {Object.entries(groupedInputs).map(([groupName, inputs]) => (
+//         <div key={groupName}>
+//           <h3>{groupName}</h3>
+//           {inputs.map((input) => (
+//             <div key={input.id}>
+//               {renderInput(input)}
+//               {!input.editable && (
+//                 <button
+//                   type="button"
+//                   onClick={() =>
+//                     dispatch({ type: "TOGGLE_EDITABILITY", id: input.id })
+//                   }
+//                 >
+//                   Edit
+//                 </button>
+//               )}
+//             </div>
+//           ))}
+//         </div>
+//       ))}
+//       <button
+//         type="button"
+//         onClick={() =>
+//           dispatch({ type: "ADD_INPUT", groupName: "Default Group" })
+//         }
+//       >
+//         Add Input
+//       </button>
+//       <button type="submit">Submit</button>
+//     </form>
+//   );
+// };
+//
+// export default DynamicInput;
+
+// import React, { useReducer } from "react";
+// import { v4 as uuidv4 } from "uuid";
+//
+// interface InputField {
+//   id: string;
+//   type: "text" | "select" | "checkbox";
+//   value: string;
+//   options?: Array<{ label: string; value: string }>;
+//   editable: boolean;
+// }
+//
+// type State = InputField[];
+//
+// type Action =
+//   | { type: "ADD_INPUT" }
+//   | { type: "UPDATE_INPUT"; id: string; value: string }
+//   | { type: "TOGGLE_EDITABILITY"; id: string }
+//   | { type: "SUBMIT" };
+//
+// const inputReducer = (state: State, action: Action): State => {
+//   switch (action.type) {
+//     case "ADD_INPUT":
+//       return [
+//         ...state,
+//         { id: uuidv4(), type: "text", value: "", editable: true },
+//       ];
+//     case "UPDATE_INPUT":
+//       return state.map((input) =>
+//         input.id === action.id ? { ...input, value: action.value } : input,
+//       );
+//     case "TOGGLE_EDITABILITY":
+//       return state
+//         .map((input) =>
+//           input.id === action.id
+//             ? { ...input, editable: !input.editable }
+//             : input,
+//         )
+//         .filter((input) => input.editable || input.value.trim() !== "");
+//     case "SUBMIT":
+//       return state.map((input) => ({ ...input, editable: false }));
+//     default:
+//       return state;
+//   }
+// };
+//
+// const DynamicInput: React.FC = () => {
+//   const [inputs, dispatch] = useReducer(inputReducer, [
+//     { id: uuidv4(), type: "text", value: "", editable: true },
+//   ]);
+//
+//   const handleSubmit = (event: React.FormEvent) => {
+//     event.preventDefault();
+//     dispatch({ type: "SUBMIT" });
+//   };
+//
+//   const renderInput = (input: InputField) => {
+//     if (!input.editable) {
+//       return <span>{input.value}</span>;
+//     }
+//     switch (input.type) {
+//       case "text":
+//         return (
+//           <input
+//             type="text"
+//             value={input.value}
+//             onChange={(e) =>
+//               dispatch({
+//                 type: "UPDATE_INPUT",
+//                 id: input.id,
+//                 value: e.target.value,
+//               })
+//             }
+//           />
+//         );
+//       case "select":
+//         return (
+//           <select
+//             value={input.value}
+//             onChange={(e) =>
+//               dispatch({
+//                 type: "UPDATE_INPUT",
+//                 id: input.id,
+//                 value: e.target.value,
+//               })
+//             }
+//           >
+//             {input.options?.map((option) => (
+//               <option key={option.value} value={option.value}>
+//                 {option.label}
+//               </option>
+//             ))}
+//           </select>
+//         );
+//       case "checkbox":
+//         return (
+//           <input
+//             type="checkbox"
+//             checked={input.value === "true"}
+//             onChange={(e) =>
+//               dispatch({
+//                 type: "UPDATE_INPUT",
+//                 id: input.id,
+//                 value: String(e.target.checked),
+//               })
+//             }
+//           />
+//         );
+//       default:
+//         return null;
+//     }
+//   };
+//
+//   return (
+//     <form onSubmit={handleSubmit}>
+//       {inputs.map((input) => (
+//         <div key={input.id}>
+//           {renderInput(input)}
+//           <button
+//             type="button"
+//             onClick={() =>
+//               dispatch({ type: "TOGGLE_EDITABILITY", id: input.id })
+//             }
+//           >
+//             {input.editable ? "Lock" : "Edit"}
+//           </button>
+//         </div>
+//       ))}
+//       <button type="button" onClick={() => dispatch({ type: "ADD_INPUT" })}>
+//         Add Input
+//       </button>
+//       <button type="submit">Submit</button>
+//     </form>
+//   );
+// };
+//
+// export default DynamicInput;
+
+// import React, { useState } from "react";
+// import { v4 as uuidv4 } from "uuid";
+//
+// interface InputField {
+//   id: string;
+//   type: "text" | "select" | "checkbox";
+//   value: string;
+//   options?: Array<{ label: string; value: string }>;
+//   error: string;
+// }
+//
+// const DynamicInput: React.FC = () => {
+//   const [inputs, setInputs] = useState<InputField[]>([
+//     { id: uuidv4(), type: "text", value: "", error: "" },
+//   ]);
+//
+//   const addInput = () => {
+//     const newInput: InputField = {
+//       id: uuidv4(),
+//       type: "text",
+//       value: "",
+//       error: "",
+//     };
+//     setInputs((inputs) => [...inputs, newInput]);
+//   };
+//
+//   const validateInput = (value: string): string => {
+//     if (!value.trim()) return "This field cannot be empty.";
+//     return "";
+//   };
+//
+//   const handleInputChange = (id: string, newValue: string) => {
+//     const error = validateInput(newValue);
+//     const updatedInputs = inputs.map((input) => {
+//       if (input.id === id) {
+//         return { ...input, value: newValue, error };
+//       }
+//       return input;
+//     });
+//     setInputs(updatedInputs);
+//   };
+//
+//   const handleSubmit = (event: React.FormEvent) => {
+//     event.preventDefault();
+//     const hasErrors = inputs.some((input) => validateInput(input.value));
+//     if (hasErrors) {
+//       console.log("There are errors in the form.");
+//       return;
+//     }
+//     console.log(
+//       "Submitted Inputs:",
+//       inputs.map(({ id, value }) => ({ id, value })),
+//     );
+//   };
+//   const renderInput = (input: InputField) => {
+//     switch (input.type) {
+//       case "text":
+//         return (
+//           <input
+//             type="text"
+//             value={input.value}
+//             onChange={(e) => handleInputChange(input.id, e.target.value)}
+//           />
+//         );
+//       case "select":
+//         return (
+//           <select
+//             value={input.value}
+//             onChange={(e) => handleInputChange(input.id, e.target.value)}
+//           >
+//             {input.options?.map((option) => (
+//               <option key={option.value} value={option.value}>
+//                 {option.label}
+//               </option>
+//             ))}
+//           </select>
+//         );
+//       case "checkbox":
+//         return (
+//           <input
+//             type="checkbox"
+//             checked={input.value === "true"} // Assuming 'true' as string for checked
+//             onChange={(e) =>
+//               handleInputChange(input.id, String(e.target.checked))
+//             }
+//           />
+//         );
+//       default:
+//         return null;
+//     }
+//   };
+//
+//   return (
+//     <form onSubmit={handleSubmit}>
+//       {inputs.map((input) => (
+//         <div key={input.id}>
+//           {renderInput(input)}
+//           {input.error && <p style={{ color: "red" }}>{input.error}</p>}
+//         </div>
+//       ))}
+//       <button type="button" onClick={addInput}>
+//         Add Input
+//       </button>
+//       <button type="submit">Submit</button>
+//     </form>
+//   );
+// };
+//
+// export default DynamicInput;
+
+// import React, { useReducer } from "react";
+// import { v4 as uuidv4 } from "uuid";
+//
+// interface InputField {
+//   id: string;
+//   type: "text" | "select" | "checkbox";
+//   value: string;
+//   options?: Array<{ label: string; value: string }>;
+//   editable: boolean;
+//   groupName: string; // Included groupName in the interface
+// }
+//
+// type State = InputField[];
+//
+// type Action =
+//     | { type: "ADD_INPUT"; groupName: string } // Corrected action type for adding input with groupName
+//     | { type: "UPDATE_INPUT"; id: string; value: string }
+//     | { type: "TOGGLE_EDITABILITY"; id: string }
+//     | { type: "SUBMIT" };
+//
+// const inputReducer = (state: State, action: Action): State => {
+//   switch (action.type) {
+//     case "ADD_INPUT":
+//       return [
+//         ...state,
+//         {
+//           id: uuidv4(),
+//           type: "text",
+//           value: "",
+//           editable: true,
+//           groupName: action.groupName, // Use groupName from the action
+//         },
+//       ];
+//     case "UPDATE_INPUT":
+//       return state.map((input) =>
+//           input.id === action.id ? { ...input, value: action.value } : input,
+//       );
+//     case "TOGGLE_EDITABILITY":
+//       return state.map((input) =>
+//           input.id === action.id
+//               ? { ...input, editable: !input.editable }
+//               : input,
+//       );
+//     case "SUBMIT":
+//       return state.map((input) => ({ ...input, editable: false }));
+//     default:
+//       return state;
+//   }
+// };
+//
+// const DynamicInput: React.FC = () => {
+//   const [inputs, dispatch] = useReducer(inputReducer, [
+//     // Initial state includes a groupName for the first input
+//     {
+//       id: uuidv4(),
+//       type: "text",
+//       value: "",
+//       editable: true,
+//       groupName: "Default Group",
+//     },
+//   ]);
+//
+//   const handleSubmit = (event: React.FormEvent) => {
+//     event.preventDefault();
+//     dispatch({ type: "SUBMIT" });
+//   };
+//
+//   const groupedInputs = inputs.reduce(
+//       (acc, input) => {
+//         acc[input.groupName] = acc[input.groupName] || [];
+//         acc[input.groupName].push(input);
+//         return acc;
+//       },
+//       {} as Record<string, InputField[]>,
+//   );
+//
+//   const renderInput = (input: InputField) => {
+//     if (!input.editable) {
+//       return <span>{input.value}</span>;
+//     }
+//     switch (input.type) {
+//       case "text":
+//         return (
+//             <input
+//                 type="text"
+//                 value={input.value}
+//                 onChange={(e) =>
+//                     dispatch({
+//                       type: "UPDATE_INPUT",
+//                       id: input.id,
+//                       value: e.target.value,
+//                     })
+//                 }
+//             />
+//         );
+//       case "select":
+//         return (
+//             <select
+//                 value={input.value}
+//                 onChange={(e) =>
+//                     dispatch({
+//                       type: "UPDATE_INPUT",
+//                       id: input.id,
+//                       value: e.target.value,
+//                     })
+//                 }
+//             >
+//               {input.options?.map((option) => (
+//                   <option key={option.value} value={option.value}>
+//                     {option.label}
+//                   </option>
+//               ))}
+//             </select>
+//         );
+//       case "checkbox":
+//         return (
+//             <input
+//                 type="checkbox"
+//                 checked={input.value === "true"}
+//                 onChange={(e) =>
+//                     dispatch({
+//                       type: "UPDATE_INPUT",
+//                       id: input.id,
+//                       value: String(e.target.checked),
+//                     })
+//                 }
+//             />
+//         );
+//       default:
+//         return null;
+//     }
+//   };
+//
+//   return (
+//       <form onSubmit={handleSubmit}>
+//         {Object.entries(groupedInputs).map(([groupName, inputs]) => (
+//             <div key={groupName}>
+//               <h3>{groupName}</h3> {/* Render the headline for each group */}
+//               {inputs.map((input) => (
+//                   <div key={input.id}>
+//                     {renderInput(input)}
+//                     <button
+//                         type="button"
+//                         onClick={() =>
+//                             dispatch({ type: "TOGGLE_EDITABILITY", id: input.id })
+//                         }
+//                     >
+//                       {input.editable ? "Lock" : "Edit"}
+//                     </button>
+//                   </div>
+//               ))}
+//             </div>
+//         ))}
+//         <button
+//             type="button"
+//             onClick={
+//               () => dispatch({ type: "ADD_INPUT", groupName: "Default Group" }) // Provide a way to specify the group when adding an input
+//             }
+//         >
+//           Add Input
+//         </button>
+//         <button type="submit">Submit</button>
+//       </form>
+//   );
+// };
+//
+// export default DynamicInput;
