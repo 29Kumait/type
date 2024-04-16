@@ -36,7 +36,7 @@ const App: React.FC = () => {
         <div {...stylex.props(styles.content)}>
           <Router>
             <Routes>
-              <Route path="/" element={<Page title={" ⓣ🅈ⓟⒺ "} GoTo={Link} />} />
+              <Route path="/" element={<Page title={"  Ⓒ🅅"} GoTo={Link} />} />
               <Route path="/new-page" element={<NewPage />} />
               <Route path="/another-new-page" element={<AnotherNewPage />} />
             </Routes>

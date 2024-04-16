@@ -4,7 +4,7 @@ import { FunctionComponent, ComponentProps } from "react";
 import * as stylex from "@stylexjs/stylex";
 import mainLogo from "../assets/main.svg";
 import branch from "../assets/branch.svg";
-
+import review from "../assets/review.svg";
 type PageProps = {
   title: string;
   GoTo: FunctionComponent<ComponentProps<typeof Link>>;
@@ -15,6 +15,14 @@ const Page: React.FC<PageProps> = ({ title, GoTo }) => {
     <>
       <h1>{title}</h1>
       <nav>
+        <GoTo to="/">
+          <img
+            src={review}
+            className="logo"
+            {...stylex.props(styles.logo)}
+            alt="logo"
+          />
+        </GoTo>
         <GoTo to="/new-page">
           <img
             src={mainLogo}

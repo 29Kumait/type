@@ -96,12 +96,6 @@ const styles = stylex.create({
     alignSelf: "center",
     borderRadius: "4px",
     height: "36px",
-    "::placeholder": {
-      // This targets the placeholder text
-      color: "rgba(255, 255, 255, 0.7)", // Lighter color for the placeholder
-      fontSize: "14px", // Consistent with the input text size
-      fontWeight: "bold",
-    },
   },
   inputContainer: {
     marginBottom: "9px",
