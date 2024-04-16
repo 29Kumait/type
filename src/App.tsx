@@ -11,7 +11,6 @@ const App: React.FC = () => {
     <DarkModeProvider>
       <Router basename="/">
         <Mode />
-        <Page title={" ⓣ🅈ⓟⒺ "} GoTo={Link} />
         <Routes>
           <Route path="/" element={<Page title={" ⓣ🅈ⓟⒺ "} GoTo={Link} />} />
           <Route path="/new-page" element={<NewPage />} />
