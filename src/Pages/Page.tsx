@@ -61,7 +61,7 @@ const fadeIn = stylex.keyframes({
 
 const styles = stylex.create({
   logo: {
-    height: "6em",
+    height: "3em",
     padding: "1.9em",
     willChange: "filter",
     transition: "filter 300ms",
