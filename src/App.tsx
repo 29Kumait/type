@@ -9,8 +9,9 @@ import AnotherNewPage from "./Pages/AnotherNewPage.tsx";
 const App: React.FC = () => {
   return (
     <DarkModeProvider>
-      <Mode />
-      <Router>
+      <Router basename="/type">
+        <Mode />
+
         <Routes>
           <Route path="/" element={<Page title={" ⓣ🅈ⓟⒺ "} GoTo={Link} />} />
           <Route path="/new-page" element={<NewPage />} />
