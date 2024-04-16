@@ -1,6 +1,6 @@
 import React from "react";
 import Cord from "./Cord.tsx";
-import twin from "../../assets/twin.svg";
+import api from "../../assets/api.svg";
 
 const titles = ["", "", ""];
 
@@ -10,7 +10,7 @@ const Items = titles.map((title) => ({
     <>
       {/*<h1>more content </h1>*/}
       {/*<p> more content</p>*/}
-      <img src={twin} alt="Logo" />
+      <img src={api} alt="Logo" />
     </>
   ),
 }));

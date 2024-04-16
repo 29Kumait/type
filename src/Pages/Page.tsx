@@ -5,6 +5,7 @@ import * as stylex from "@stylexjs/stylex";
 import mainLogo from "../assets/main.svg";
 import branch from "../assets/branch.svg";
 import review from "../assets/review.svg";
+import AnotherNewPage from "./AnotherNewPage.tsx";
 type PageProps = {
   title: string;
   GoTo: FunctionComponent<ComponentProps<typeof Link>>;
@@ -41,6 +42,10 @@ const Page: React.FC<PageProps> = ({ title, GoTo }) => {
           />
         </GoTo>
       </nav>
+
+      <div>
+        <AnotherNewPage />
+      </div>
     </>
   );
 };

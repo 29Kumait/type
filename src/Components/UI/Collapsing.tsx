@@ -3,6 +3,7 @@
  */
 import React, { useState } from "react";
 import david from "../../assets/david.svg";
+import api from "../../assets/api.svg";
 
 interface CollapsingProps {
   showTitle: string;
@@ -25,6 +26,7 @@ const Collapsing: React.FC<CollapsingProps> = ({
     <div>
       <button onClick={toggle}>{title}</button>
       {isOpen && <div>{children}</div>}
+      {isOpen && <img src={api} alt="Logo" />} {/* add the api image */}
       {isOpen && <img src={david} alt="Logo" />}
     </div>
   );
