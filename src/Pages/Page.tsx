@@ -49,13 +49,14 @@ const fadeIn = stylex.keyframes({
 const styles = stylex.create({
   logo: {
     height: "6em",
-    padding: "1.5em",
+    padding: "1.9em",
     willChange: "filter",
     transition: "filter 300ms",
     // eslint-disable-next-line @stylexjs/valid-styles
     ":hover": {
       filter: "drop-shadow(0 0 2em #646cffaa)",
     },
+    margin: "0 29px",
   },
 
   animation: {
