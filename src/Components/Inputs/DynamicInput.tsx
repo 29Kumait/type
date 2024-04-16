@@ -29,7 +29,7 @@ const DynamicInput = () => {
           type="text"
           value={newGroupName}
           onChange={(e) => setNewGroupName(e.target.value)}
-          placeholder="ⓣ🅈ⓟⒺ"
+          placeholder="    ⓣ🅈ⓟⒺ"
         />
         <button
           {...stylex.props(styles.button)}
@@ -48,11 +48,11 @@ const DynamicInput = () => {
           <div key={groupName}>
             <h3>{groupName}</h3>
             {groupInputs.map((input) => (
-              <div key={input.id}>
+              <div key={input.id} {...stylex.props(styles.inputContainer)}>
                 <Input input={input} dispatch={dispatch} />
                 {!input.editable && (
                   <button
-                    {...stylex.props(styles.button)}
+                    {...stylex.props(styles.editButton)} // Apply the new style here
                     type="button"
                     onClick={() =>
                       dispatch({
@@ -61,7 +61,7 @@ const DynamicInput = () => {
                       })
                     }
                   >
-                    Edit
+                    edit
                   </button>
                 )}
               </div>
@@ -80,25 +80,59 @@ const styles = stylex.create({
     marginEnd: "auto",
     marginBottom: 34,
   },
+
   input: {
     backgroundColor: "#4b51b7",
     borderStyle: "none",
     boxSizing: "border-box",
     color: "var(--primary-text)",
-    fontSize: 16,
+    fontSize: "14px",
     fontWeight: "normal",
     lineHeight: 1.25,
-    paddingBottom: 10,
-    paddingEnd: 16,
-    paddingTop: 26,
+    paddingBottom: "8px",
+    paddingEnd: "16px",
+    paddingTop: "8px",
     width: "100%",
     alignSelf: "center",
+    borderRadius: "4px",
+    height: "36px",
+    "::placeholder": {
+      // This targets the placeholder text
+      color: "rgba(255, 255, 255, 0.7)", // Lighter color for the placeholder
+      fontSize: "14px", // Consistent with the input text size
+      fontWeight: "bold",
+    },
+  },
+  inputContainer: {
+    marginBottom: "9px",
   },
   button: {
     color: "#4b51b7",
     alignItems: "center",
     borderColor: "#4a86c7",
     borderRadius: 8,
+    fontSize: "14px",
+    padding: "8px 12px",
+    height: "40px",
+    width: "80px",
+    display: "inline-flex",
+    justifyContent: "center",
+    cursor: "pointer",
+    margin: "0 5px",
+  },
+  editButton: {
+    padding: "3px 7px",
+    fontSize: "9px",
+    height: "29px",
+    width: "auto",
+    color: "#4b51b7",
+    alignItems: "center",
+    borderColor: "#4a86c7",
+    borderRadius: 9,
+    display: "inline-flex",
+    justifyContent: "center",
+    cursor: "pointer",
+    margin: "0 5px",
   },
   controls: {
     display: "flex",

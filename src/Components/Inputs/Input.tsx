@@ -32,18 +32,19 @@ const Input: React.FC<InputProps> = ({ input, dispatch }) => {
 
 const styles = stylex.create({
   input: {
-    backgroundColor: "#4b51b7",
+    backgroundColor: "#4a86c7",
     borderStyle: "none",
     boxSizing: "border-box",
-    color: "var(--primary-text)",
-    fontSize: 16,
+    fontSize: "29px",
     fontWeight: "normal",
     lineHeight: 1.25,
-    paddingBottom: 10,
-    paddingEnd: 16,
-    paddingTop: 26,
+    paddingBottom: "9px",
+    paddingEnd: "29px",
+    paddingTop: "9px",
     width: "100%",
     alignSelf: "center",
+    borderRadius: "4px",
+    height: "29px",
   },
 });
 
