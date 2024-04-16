@@ -1,6 +1,6 @@
 import React from "react";
 import * as stylex from "@stylexjs/stylex";
-import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
+import { HashRouter as Router, Routes, Route, Link } from "react-router-dom";
 import { DarkModeProvider } from "./Components/Mode/DarkModeContext.tsx";
 import Mode from "./Components/Mode/Mode.tsx";
 import Page from "./Pages/Page.tsx";
