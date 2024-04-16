@@ -73,8 +73,6 @@ export default Cord;
  );
  };
 
-
- // Define your StyleX styles here
  const styles = stylex.create({
  contentContainer: {
  overflow: "hidden",

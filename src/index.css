@@ -59,6 +59,8 @@ button {
     padding: 0.6em 1.2em;
     font-size: 1em;
     font-weight: 500;
+    height: auto;
+    width: 29px;
     font-family: inherit;
     background-color: var(--button-bg-color); /* Using variable */
     color: var(--button-text-color); /* Button text color */

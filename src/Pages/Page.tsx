@@ -1,11 +1,12 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { FunctionComponent, ComponentProps } from "react";
-import * as stylex from "@stylexjs/stylex";
+import stylex from "@stylexjs/stylex";
 import mainLogo from "../assets/main.svg";
 import branch from "../assets/branch.svg";
 import review from "../assets/review.svg";
-import AnotherNewPage from "./AnotherNewPage.tsx";
+import LanguageProficiency from "../Components/Data/LanguageProficiency.tsx";
+
 type PageProps = {
   title: string;
   GoTo: FunctionComponent<ComponentProps<typeof Link>>;
@@ -15,20 +16,28 @@ const Page: React.FC<PageProps> = ({ title, GoTo }) => {
   return (
     <>
       <h1>{title}</h1>
+      <div>
+        <LanguageProficiency />
+      </div>
       <nav>
         <GoTo to="/">
           <img
             src={review}
             className="logo"
-            {...stylex.props(styles.logo)}
+            {...stylex.props(stylesPage.logo, stylesPage.imageStyle)}
             alt="logo"
           />
         </GoTo>
+
         <GoTo to="/new-page">
           <img
             src={mainLogo}
             className="logo"
-            {...stylex.props(styles.animation, styles.logo)}
+            {...stylex.props(
+              stylesPage.animation,
+              stylesPage.logo,
+              stylesPage.imageStyle,
+            )}
             alt="logo"
           />
         </GoTo>
@@ -37,15 +46,11 @@ const Page: React.FC<PageProps> = ({ title, GoTo }) => {
           <img
             src={branch}
             className="logo"
-            {...stylex.props(styles.logo)}
+            {...stylex.props(stylesPage.logo, stylesPage.imageStyle)}
             alt="logo"
           />
         </GoTo>
       </nav>
-
-      <div>
-        <AnotherNewPage />
-      </div>
     </>
   );
 };
@@ -59,17 +64,21 @@ const fadeIn = stylex.keyframes({
   to: { opacity: 1 },
 });
 
-const styles = stylex.create({
+const stylesPage = stylex.create({
   logo: {
-    height: "3em",
-    padding: "1.9em",
+    height: "6em",
+    padding: "1.5em",
     willChange: "filter",
     transition: "filter 300ms",
     // eslint-disable-next-line @stylexjs/valid-styles
     ":hover": {
       filter: "drop-shadow(0 0 2em #646cffaa)",
     },
-    margin: "0 29px",
+  },
+
+  imageStyle: {
+    width: "190",
+    height: "auto",
   },
 
   animation: {

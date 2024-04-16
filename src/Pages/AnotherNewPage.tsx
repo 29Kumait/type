@@ -1,9 +1,9 @@
 import React from "react";
-import * as stylex from "@stylexjs/stylex";
+import stylex from "@stylexjs/stylex";
 import DynamicInput from "../Components/Inputs/DynamicInput.tsx";
 import lady from "../assets/lady.png";
 
-const styles = stylex.create({
+const stylesAnotherNewPage = stylex.create({
   header: {
     margin: "20px",
   },
@@ -16,8 +16,8 @@ const styles = stylex.create({
 
 const AnotherNewPage: React.FC = () => {
   return (
-    <div {...stylex.props(styles.logo(lady))}>
-      <h1 {...stylex.props(styles.header)}>AnotherNewPage</h1>
+    <div {...stylex.props(stylesAnotherNewPage.logo(lady))}>
+      <h1 {...stylex.props(stylesAnotherNewPage.header)}>AnotherNewPage</h1>
       <DynamicInput />
     </div>
   );
