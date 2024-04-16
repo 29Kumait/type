@@ -15,20 +15,20 @@ const Page: React.FC<PageProps> = ({ title, GoTo }) => {
     <>
       <h1>{title}</h1>
       <nav>
-        <GoTo to="/">
-          <img
-            src={branch}
-            className="logo"
-            {...stylex.props(styles.logo)}
-            alt="logo"
-          />
-        </GoTo>
-
         <GoTo to="/new-page">
           <img
             src={mainLogo}
             className="logo"
-            {...stylex.props(styles.logo, styles.animation)}
+            {...stylex.props(styles.animation, styles.logo)}
+            alt="logo"
+          />
+        </GoTo>
+
+        <GoTo to="/another-new-page">
+          <img
+            src={branch}
+            className="logo"
+            {...stylex.props(styles.logo)}
             alt="logo"
           />
         </GoTo>
@@ -37,12 +37,12 @@ const Page: React.FC<PageProps> = ({ title, GoTo }) => {
   );
 };
 
-const logoSpin = stylex.keyframes({
+const spin = stylex.keyframes({
   from: { transform: "rotate(0deg)" },
   to: { transform: "rotate(360deg)" },
 });
 const fadeIn = stylex.keyframes({
-  from: { opacity: 0 },
+  from: { opacity: 0.5 },
   to: { opacity: 1 },
 });
 
@@ -51,18 +51,18 @@ const styles = stylex.create({
     height: "6em",
     padding: "1.5em",
     willChange: "filter",
-    transition: "filter 29ms",
+    transition: "filter 300ms",
     // eslint-disable-next-line @stylexjs/valid-styles
     ":hover": {
-      filter: "drop-shadow(0 0 2em #61dafbaa)",
+      filter: "drop-shadow(0 0 2em #646cffaa)",
     },
   },
 
   animation: {
-    animationName: `${logoSpin}, ${fadeIn}`,
-    animationDuration: "20s, 29s",
-    animationIterationCount: "infinite, infinite",
-    animationTimingFunction: "linear, ease-out",
+    animationName: `${spin}, ${fadeIn}`,
+    animationDuration: "20s",
+    animationIterationCount: "infinite",
+    animationTimingFunction: "linear",
   },
 });
 

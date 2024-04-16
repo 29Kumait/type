@@ -6,7 +6,7 @@ const ModalDefault: React.FC = () => {
   return (
     <>
       <Modal isOpen={isModalOpen} onClose={() => setModalOpen(false)}>
-        <p>This is the default modal content!</p>
+        <p> Modal-content!</p>
       </Modal>
       <button onClick={() => setModalOpen(true)}>Open Modal</button>
     </>
