@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
+import { HashRouter as Router, Routes, Route, Link } from "react-router-dom";
 import { DarkModeProvider } from "./Components/Mode/DarkModeContext.tsx";
 import Mode from "./Components/Mode/Mode.tsx";
 import Page from "./Pages/Page.tsx";
@@ -9,8 +9,8 @@ import AnotherNewPage from "./Pages/AnotherNewPage.tsx";
 const App: React.FC = () => {
   return (
     <DarkModeProvider>
-      <Router basename="/">
-        <Mode />
+      <Mode />
+      <Router>
         <Routes>
           <Route path="/" element={<Page title={" ⓣ🅈ⓟⒺ "} GoTo={Link} />} />
           <Route path="/new-page" element={<NewPage />} />
