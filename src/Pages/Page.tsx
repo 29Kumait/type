@@ -1,57 +1,68 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { FunctionComponent, ComponentProps } from "react";
 import stylex from "@stylexjs/stylex";
 import mainLogo from "../assets/main.svg";
 import branch from "../assets/branch.svg";
 import review from "../assets/review.svg";
-import LanguageProficiency from "../Components/Data/LanguageProficiency.tsx";
+import { RocketIcon } from "@primer/octicons-react";
+import Navbar from "../Components/Nav/Navbar.tsx";
 
 type PageProps = {
   title: string;
   GoTo: FunctionComponent<ComponentProps<typeof Link>>;
 };
 
-const Page: React.FC<PageProps> = ({ title, GoTo }) => {
+const Page: React.FC<PageProps> = ({ GoTo }) => {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  const [activeLink, setActiveLink] = useState<string | null>(null);
   return (
-    <>
-      <h1>{title}</h1>
-      <div>
-        <LanguageProficiency />
-      </div>
-      <nav>
-        <GoTo to="/">
-          <img
-            src={review}
-            className="logo"
-            {...stylex.props(stylesPage.logo, stylesPage.imageStyle)}
-            alt="logo"
-          />
-        </GoTo>
+    <div>
+      <header>
+        <h1>Ⓒ🅅</h1>
+      </header>
 
-        <GoTo to="/new-page">
-          <img
-            src={mainLogo}
-            className="logo"
-            {...stylex.props(
-              stylesPage.animation,
-              stylesPage.logo,
-              stylesPage.imageStyle,
-            )}
-            alt="logo"
-          />
-        </GoTo>
+      <button onClick={() => setIsMenuOpen(!isMenuOpen)}>
+        <RocketIcon size={19} />
+      </button>
+      <Navbar
+        {...stylex.props(nav.navbar)}
+        activeLink={activeLink || "defaultLink"}
+        setActiveLink={(value: string) => setActiveLink(value)}
+        isMenuOpen={isMenuOpen}
+      />
 
-        <GoTo to="/another-new-page">
-          <img
-            src={branch}
-            className="logo"
-            {...stylex.props(stylesPage.logo, stylesPage.imageStyle)}
-            alt="logo"
-          />
-        </GoTo>
-      </nav>
-    </>
+      <GoTo to="/">
+        <img
+          src={review}
+          className={stylex(stylesPage.logo, stylesPage.imageStyle)}
+          alt="logo"
+        />
+      </GoTo>
+
+      <GoTo to="/new-page">
+        <img
+          src={mainLogo}
+          className="logo"
+          {...stylex.props(
+            stylesPage.animation,
+            stylesPage.logo,
+            stylesPage.imageStyle,
+          )}
+          alt="logo"
+        />
+      </GoTo>
+
+      <GoTo to="/another-new-page">
+        <img
+          src={branch}
+          className="logo"
+          {...stylex.props(stylesPage.logo, stylesPage.imageStyle)}
+          alt="logo"
+        />
+      </GoTo>
+    </div>
   );
 };
 
@@ -65,20 +76,21 @@ const fadeIn = stylex.keyframes({
 });
 
 const stylesPage = stylex.create({
+  imageStyle: {
+    maxWidth: "275px",
+    height: "auto",
+    width: "19",
+  },
+
   logo: {
-    height: "6em",
+    height: "7em",
     padding: "1.5em",
     willChange: "filter",
     transition: "filter 300ms",
     // eslint-disable-next-line @stylexjs/valid-styles
     ":hover": {
-      filter: "drop-shadow(0 0 2em #646cffaa)",
+      filter: "drop-shadow(0 0 2em #61dafbaa)",
     },
-  },
-
-  imageStyle: {
-    width: "190",
-    height: "auto",
   },
 
   animation: {
@@ -88,5 +100,11 @@ const stylesPage = stylex.create({
     animationTimingFunction: "linear",
   },
 });
-
+const nav = stylex.create({
+  navbar: {
+    display: "flex",
+    justifyContent: "space-between",
+    margin: "40 auto",
+  },
+});
 export default Page;

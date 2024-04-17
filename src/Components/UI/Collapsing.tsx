@@ -26,7 +26,7 @@ const Collapsing: React.FC<CollapsingProps> = ({
     <div>
       <button onClick={toggle}>{title}</button>
       {isOpen && <div>{children}</div>}
-      {isOpen && <img src={api} alt="Logo" />} {/* add the api image */}
+      {isOpen && <img src={api} alt="Logo" />}
       {isOpen && <img src={david} alt="Logo" />}
     </div>
   );

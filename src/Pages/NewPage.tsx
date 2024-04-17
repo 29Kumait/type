@@ -2,6 +2,7 @@ import React from "react";
 import Collapsing from "../Components/UI/Collapsing.tsx";
 import ModalDefault from "../Components/UI/ModalDefault.tsx";
 import ItemsCord from "../Components/UI/ItemsCord";
+import LanguageProficiency from "../Components/Data/LanguageProficiency.tsx";
 
 const NewPage: React.FC = () => {
   return (
@@ -9,6 +10,7 @@ const NewPage: React.FC = () => {
       <Collapsing showTitle="Show" hideTitle="Hide" children />
       <ModalDefault />
       <ItemsCord />
+      <LanguageProficiency />
     </div>
   );
 };

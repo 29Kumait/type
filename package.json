@@ -12,6 +12,7 @@
     "deploy": "gh-pages -d dist -r https://github.com/29Kumait/type.git"
   },
   "dependencies": {
+    "@primer/octicons-react": "^19.9.0",
     "@react-buddy/ide-toolbox": "^2.4.0",
     "@stylexjs/stylex": "^0.5.1",
     "framer-motion": "^11.0.27",

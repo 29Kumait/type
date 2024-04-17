@@ -9,6 +9,7 @@
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+
 }
 
 :root[data-theme='dark'] {
@@ -16,6 +17,10 @@
     --text-color: rgba(255, 255, 255, 0.87);
     --button-bg-color: rgba(0, 0, 0, 0.68);
     --button-text-color:  rgb(193, 193, 193);
+
+    background-image: url('https://cf-ipfs.com/ipfs/bafkreiejuvwm22q6amd5xrxbkcvnhnxdaq7txehfo6vsu7udlzclzl6kxi');
+    background-repeat: no-repeat;
+    background-size: cover;
 }
 
 :root[data-theme='light'] {
@@ -27,7 +32,6 @@
 
 
 body {
-    margin: 0;
     display: flex;
     place-items: center;
     justify-content: center;
@@ -36,6 +40,7 @@ body {
     color: var(--text-color);
     background-color: var(--background-color);
     /*background-image: linear-gradient(to bottom, var(--background-color), black);*/
+
 }
 
 a {
@@ -60,7 +65,7 @@ button {
     font-size: 1em;
     font-weight: 500;
     height: auto;
-    width: 29px;
+    width: auto;
     font-family: inherit;
     background-color: var(--button-bg-color); /* Using variable */
     color: var(--button-text-color); /* Button text color */

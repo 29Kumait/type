@@ -987,3 +987,11 @@
 // };
 //
 // export default DynamicInput;
+
+
+
+
+
+// color: '#FFFFFFCF',
+// backgroundColor: '#050F1AE8',
+// backgroundColor: '#54C3EF9E',
