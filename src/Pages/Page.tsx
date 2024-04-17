@@ -1,67 +1,51 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
+import React from "react";
 import { FunctionComponent, ComponentProps } from "react";
 import stylex from "@stylexjs/stylex";
 import mainLogo from "../assets/main.svg";
 import branch from "../assets/branch.svg";
-import review from "../assets/review.svg";
-import { RocketIcon } from "@primer/octicons-react";
-import Navbar from "../Components/Nav/Navbar.tsx";
+// import review from "../assets/review.svg";
+// import Header from "./Header.tsx";
 
 type PageProps = {
-  title: string;
-  GoTo: FunctionComponent<ComponentProps<typeof Link>>;
+  GoTo: FunctionComponent<ComponentProps<typeof NavLink>>;
 };
 
 const Page: React.FC<PageProps> = ({ GoTo }) => {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-
-  const [activeLink, setActiveLink] = useState<string | null>(null);
   return (
     <div>
-      <header>
-        <h1>Ⓒ🅅</h1>
-      </header>
+      <div>
+        {/*<GoTo to="/">*/}
+        {/*  <img*/}
+        {/*    src={review}*/}
+        {/*    className={stylex(stylesPage.logo, stylesPage.imageStyle)}*/}
+        {/*    alt="logo"*/}
+        {/*  />*/}
+        {/*</GoTo>*/}
 
-      <button onClick={() => setIsMenuOpen(!isMenuOpen)}>
-        <RocketIcon size={19} />
-      </button>
-      <Navbar
-        {...stylex.props(nav.navbar)}
-        activeLink={activeLink || "defaultLink"}
-        setActiveLink={(value: string) => setActiveLink(value)}
-        isMenuOpen={isMenuOpen}
-      />
+        <GoTo to="/new-page">
+          <img
+            src={mainLogo}
+            className="logo"
+            {...stylex.props(
+              stylesPage.animation,
+              stylesPage.logo,
+              stylesPage.imageStyle,
+            )}
+            alt="logo"
+          />
+        </GoTo>
 
-      <GoTo to="/">
-        <img
-          src={review}
-          className={stylex(stylesPage.logo, stylesPage.imageStyle)}
-          alt="logo"
-        />
-      </GoTo>
-
-      <GoTo to="/new-page">
-        <img
-          src={mainLogo}
-          className="logo"
-          {...stylex.props(
-            stylesPage.animation,
-            stylesPage.logo,
-            stylesPage.imageStyle,
-          )}
-          alt="logo"
-        />
-      </GoTo>
-
-      <GoTo to="/another-new-page">
-        <img
-          src={branch}
-          className="logo"
-          {...stylex.props(stylesPage.logo, stylesPage.imageStyle)}
-          alt="logo"
-        />
-      </GoTo>
+        <GoTo to="/another-new-page">
+          <img
+            src={branch}
+            className="logo"
+            {...stylex.props(stylesPage.logo, stylesPage.imageStyle)}
+            alt="logo"
+          />
+        </GoTo>
+      </div>
+      <h1 {...stylex.props(stylesPage.text)}>Ⓒ🅅</h1>
     </div>
   );
 };
@@ -99,12 +83,30 @@ const stylesPage = stylex.create({
     animationIterationCount: "infinite",
     animationTimingFunction: "linear",
   },
-});
-const nav = stylex.create({
-  navbar: {
+
+  text: {
+    color: "#4b51b7",
+    alignItems: "center",
+    justifyContent: "flex-end",
     display: "flex",
-    justifyContent: "space-between",
-    margin: "40 auto",
+    order: 2,
+    maxWidth: "29vw",
+    margin: "10px 0",
+    textAlign: "center",
+    borderColor: "#4a86c7",
+    borderRadius: 8,
+    borderStyle: "solid",
+    borderWidth: 2,
+    flexBasis: 0,
+    flexGrow: 1,
+    height: "auto",
+    marginEnd: 29,
+    marginStart: 29,
+    paddingEnd: 8,
+    paddingStart: 8,
+    backgroundColor: "rbg(106,115,123)",
+    paddingTop: 100,
   },
 });
+
 export default Page;
