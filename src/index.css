@@ -18,6 +18,10 @@
     --button-bg-color: rgba(0, 0, 0, 0.68);
     --button-text-color:  rgb(193, 193, 193);
 
+    background-image: url('https://cf-ipfs.com/ipfs/bafkreiejuvwm22q6amd5xrxbkcvnhnxdaq7txehfo6vsu7udlzclzl6kxi');
+    background-repeat: no-repeat;
+    background-size: cover;
+
 
 }
 
@@ -94,6 +98,3 @@ button:hover {
 }
 
 
-/*background-image: url('https://cf-ipfs.com/ipfs/bafkreiejuvwm22q6amd5xrxbkcvnhnxdaq7txehfo6vsu7udlzclzl6kxi');*/
-/*background-repeat: no-repeat;*/
-/*background-size: cover;*/
